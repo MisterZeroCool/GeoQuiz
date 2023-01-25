@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">GeoQuiz</string>
-    <string name="question_text">Canberra is the capital of Australia</string>
+    <string name="question_moscow">Столица России - Москва.</string>
+    <string name="question_andorra">Андорра - самая маленькая в мире страна.</string>
+    <string name="question_atomium">Атомиум - достопримечательность Франции.</string>
+    <string name="question_eswatini">Страна Эсватини называлась Свазилендом.</string>
+    <string name="question_gobi">Самая большая пустыня в мире - Гоби</string>
+    <string name="question_north_centre_america">Все страны Северной и Центральной Америки имеют выход к морю.</string>
+    <string name="question_buj_khalifa">Бурдж Халифа - самая высокая башня в мире.</string>
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="correct_toast">Correct!</string>
     <string name="incorrect_toast">Incorrect!</string>
+    <string name="next_button">Next</string>
+    <string name="prev_button">Prev</string>
 </resources>
