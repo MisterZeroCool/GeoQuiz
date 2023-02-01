@@ -1,11 +1,9 @@
 package ru.foxdev.geoquiz
 
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -20,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var nextButton: ImageButton
     private lateinit var questionTextView: TextView
+    private lateinit var answerPercentTextView: TextView
 
     private var count = 0
 
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prev_button)
         nextButton = findViewById(R.id.next_button)
         questionTextView = findViewById(R.id.question_text_view)
-
+        answerPercentTextView = findViewById(R.id.answer_percent)
 
 
         trueButton.setOnClickListener { view: View -> checkAnswer(true)
@@ -68,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
             falseButton.isEnabled = true
             trueButton.isEnabled = true
+            answerPercentTextView.text = "0"
         }
 
 //        prevButton.setOnClickListener {
@@ -83,9 +83,6 @@ class MainActivity : AppCompatActivity() {
                 falseButton.isEnabled = true
                 trueButton.isEnabled = true
                 updateQuestion()
-                var d = answerPercent(count)
-                Thread.sleep(1000)
-                Toast.makeText(this,"Процентов", Toast.LENGTH_SHORT )
             }
         }
         updateQuestion()
@@ -97,22 +94,22 @@ class MainActivity : AppCompatActivity() {
         questionTextView.setText(questionTextResId)
     }
 
+    private fun answerPercent(count: Int): Int {
+        return 100*count/questionBank.size
+
+    }
+
     private fun checkAnswer(userAnswer: Boolean){
         val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if (userAnswer == correctAnswer){
             count += 1
+            answerPercentTextView.text = "${answerPercent(count)}%"
             R.string.correct_toast
         }else{
             R.string.incorrect_toast
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
-    }
 
-    private fun answerPercent(count: Int):Int{
-        return if (count == 0){
-            0
-        }else
-            100 * count / questionBank.size
     }
 
     override fun onStart() {
