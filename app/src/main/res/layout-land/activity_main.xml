@@ -5,17 +5,33 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/answer_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginLeft="404dp"
+        android:hint="@string/answer_percent"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:visibility="visible"
+        tools:text="@string/answer_percent" />
+
+    <TextView
         android:id="@+id/question_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:padding="24dp"
-        tools:text = "@string/question_moscow"/>
+        android:padding="70dp"
+        android:visibility="visible"
+        tools:text="@string/question_moscow"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal">
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="20dp">
 
         <Button
             android:id="@+id/true_button"
@@ -37,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="20dp">
 
         <ImageButton
             android:id="@+id/prev_button"
@@ -57,6 +73,21 @@
             android:src="@drawable/arrow_right"
             android:contentDescription="Листать вправо"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="60dp">
+
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/reset_button" />
     </LinearLayout>
 
 </FrameLayout>

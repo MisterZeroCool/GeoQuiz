@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,25 +21,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var questionTextView: TextView
     private lateinit var answerPercentTextView: TextView
 
-    private var count = 0
-
-    private val questionBank = listOf(
-        Question(R.string.question_moscow,true),
-        Question(R.string.question_eswatini,true),
-        Question(R.string.question_andorra,false),
-        Question(R.string.question_buj_khalifa,true),
-        Question(R.string.question_atomium,false),
-        Question(R.string.question_gobi,false),
-        Question(R.string.question_north_centre_america,true)
-    )
-
-    private var currentIndex = 0;
-
-
+    private val quizViewModel: QuizViewModel by lazy {
+        ViewModelProvider(this)[QuizViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
 
 
@@ -51,19 +39,21 @@ class MainActivity : AppCompatActivity() {
         answerPercentTextView = findViewById(R.id.answer_percent)
 
 
-        trueButton.setOnClickListener { view: View -> checkAnswer(true)
+        trueButton.setOnClickListener {
+            checkAnswer(true)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
         }
 
-        falseButton.setOnClickListener { view: View -> checkAnswer(false)
+        falseButton.setOnClickListener {
+            checkAnswer(false)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
         }
 
         resetButton.setOnClickListener {
-            currentIndex = 0
-            count = 0
+            quizViewModel.currentIndex = 0
+            quizViewModel.countTrueAnswers = 0
             updateQuestion()
             falseButton.isEnabled = true
             trueButton.isEnabled = true
@@ -78,64 +68,42 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         nextButton.setOnClickListener {
-            if (currentIndex < questionBank.size-1) {
-                currentIndex = (currentIndex + 1) % questionBank.size
-                falseButton.isEnabled = true
-                trueButton.isEnabled = true
-                updateQuestion()
+            if (quizViewModel.currentIndex < quizViewModel.getSize()-1){
+            quizViewModel.moveToNext()
+            falseButton.isEnabled = true
+            trueButton.isEnabled = true
+            updateQuestion()
             }
         }
         updateQuestion()
-
     }
 
+
+
+//    private fun updateQuestion() {
+//        val questionTextResId = questionBank[currentIndex].textResId
+//        questionTextView.setText(questionTextResId)
+//    }
+
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
     }
 
     private fun answerPercent(count: Int): Int {
-        return 100*count/questionBank.size
-
+        return 100*count/quizViewModel.getSize()
     }
 
-    private fun checkAnswer(userAnswer: Boolean){
-        val correctAnswer = questionBank[currentIndex].answer
-        val messageResId = if (userAnswer == correctAnswer){
-            count += 1
-            answerPercentTextView.text = "${answerPercent(count)}%"
+    private fun checkAnswer(userAnswer: Boolean) {
+        val correctAnswer = quizViewModel.currentQuestionAnswer
+        val messageResId = if (userAnswer == correctAnswer) {
+            quizViewModel.countTrueAnswers += 1
+            answerPercentTextView.text = "${answerPercent(quizViewModel.countTrueAnswers)}%"
             R.string.correct_toast
-        }else{
+        } else {
             R.string.incorrect_toast
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart() called")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume() called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause() called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop() called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy() called")
     }
 }
-
 
