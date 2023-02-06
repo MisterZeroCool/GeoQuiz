@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 
+private const val KEY_INDEX = "index"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
@@ -25,9 +26,17 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_INDEX, quizViewModel.currentIndex)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
+        quizViewModel.currentIndex = currentIndex
 
 
         trueButton = findViewById(R.id.true_button)
@@ -37,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         questionTextView = findViewById(R.id.question_text_view)
         answerPercentTextView = findViewById(R.id.answer_percent)
+
+        answerPercentTextView.text = quizViewModel.percentAnswer.toString()+"%"
 
 
         trueButton.setOnClickListener {
@@ -54,10 +65,11 @@ class MainActivity : AppCompatActivity() {
         resetButton.setOnClickListener {
             quizViewModel.currentIndex = 0
             quizViewModel.countTrueAnswers = 0
+            quizViewModel.percentAnswer = 0
             updateQuestion()
             falseButton.isEnabled = true
             trueButton.isEnabled = true
-            answerPercentTextView.text = "0"
+            answerPercentTextView.text = "0%"
         }
 
 //        prevButton.setOnClickListener {
@@ -67,6 +79,12 @@ class MainActivity : AppCompatActivity() {
 //            updateQuestion()
 //        }
 
+        /*TODO: При перевороте activity кнопки стоновятся доступными,
+           в результате чего возможно нажимать их заново
+           Необходимо устранить БАГ
+         */
+
+
         nextButton.setOnClickListener {
             if (quizViewModel.currentIndex < quizViewModel.getSize()-1){
             quizViewModel.moveToNext()
@@ -75,19 +93,14 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
             }
         }
+
         updateQuestion()
     }
-
-
-
-//    private fun updateQuestion() {
-//        val questionTextResId = questionBank[currentIndex].textResId
-//        questionTextView.setText(questionTextResId)
-//    }
 
     private fun updateQuestion() {
         val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
+
     }
 
     private fun answerPercent(count: Int): Int {
@@ -98,12 +111,14 @@ class MainActivity : AppCompatActivity() {
         val correctAnswer = quizViewModel.currentQuestionAnswer
         val messageResId = if (userAnswer == correctAnswer) {
             quizViewModel.countTrueAnswers += 1
-            answerPercentTextView.text = "${answerPercent(quizViewModel.countTrueAnswers)}%"
+            quizViewModel.percentAnswer = answerPercent( quizViewModel.countTrueAnswers)
+            answerPercentTextView.text ="${quizViewModel.percentAnswer}%"
             R.string.correct_toast
         } else {
             R.string.incorrect_toast
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
+
 }
 
