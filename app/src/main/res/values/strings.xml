@@ -13,4 +13,6 @@
     <string name="incorrect_toast">Incorrect!</string>
     <string name="next_button">Next</string>
     <string name="prev_button">Prev</string>
+    <string name="reset_button">Reset</string>
+    <string name="answer_percent">0</string>
 </resources>
