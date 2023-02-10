@@ -55,6 +55,8 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginTop="20dp">
 
+
+
         <ImageButton
             android:id="@+id/prev_button"
             android:layout_width="wrap_content"
@@ -80,6 +82,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginTop="60dp">
+
+        <Button
+            android:id="@+id/cheat_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:text="@string/cheat_button"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="100dp">
 
 
         <Button
