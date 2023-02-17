@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
 
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
@@ -44,17 +46,23 @@ class MainActivity : AppCompatActivity() {
 
         answerPercentTextView.text = quizViewModel.percentAnswer.toString()+"%"
 
+        falseButton.isEnabled = quizViewModel.buttonF
+        trueButton.isEnabled = quizViewModel.buttonT
 
         trueButton.setOnClickListener {
             checkAnswer(true)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
+            quizViewModel.buttonT = false
+            quizViewModel.buttonF = false
         }
 
         falseButton.setOnClickListener {
             checkAnswer(false)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
+            quizViewModel.buttonT = false
+            quizViewModel.buttonF = false
         }
 
         resetButton.setOnClickListener {
@@ -63,6 +71,8 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
             falseButton.isEnabled = true
             trueButton.isEnabled = true
+            quizViewModel.buttonT = true
+            quizViewModel.buttonF = true
             quizViewModel.percentAnswer = 0
             answerPercentTextView.text = quizViewModel.percentAnswer.toString() +"%"
         }
