@@ -2,7 +2,6 @@ package ru.foxdev.geoquiz
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 
@@ -11,10 +10,6 @@ class QuizViewModel : ViewModel() {
     var currentIndex = 0;
     var countTrueAnswers = 0
     var percentAnswer = 0
-
-    var buttonF: Boolean = true
-    var buttonT: Boolean = true
-
 
     var isCheater = false
 
