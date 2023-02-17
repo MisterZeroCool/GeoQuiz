@@ -11,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 
-
 private const val REQUEST_CODE_CHEAT = 0
 
 
@@ -29,17 +28,9 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(KEY_INDEX, quizViewModel.currentIndex)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
-        quizViewModel.currentIndex = currentIndex
 
 
         trueButton = findViewById(R.id.true_button)
@@ -50,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         questionTextView = findViewById(R.id.question_text_view)
         answerPercentTextView = findViewById(R.id.answer_percent)
         cheatButton = findViewById(R.id.cheat_button)
-
-        answerPercentTextView.text = quizViewModel.percentAnswer.toString()+"%"
 
         answerPercentTextView.text = quizViewModel.percentAnswer.toString()+"%"
 
@@ -71,15 +60,11 @@ class MainActivity : AppCompatActivity() {
         resetButton.setOnClickListener {
             quizViewModel.currentIndex = 0
             quizViewModel.countTrueAnswers = 0
-            quizViewModel.percentAnswer = 0
             updateQuestion()
             falseButton.isEnabled = true
             trueButton.isEnabled = true
-
             quizViewModel.percentAnswer = 0
             answerPercentTextView.text = quizViewModel.percentAnswer.toString() +"%"
-
-
         }
 
 //        prevButton.setOnClickListener {
@@ -89,12 +74,6 @@ class MainActivity : AppCompatActivity() {
 //            updateQuestion()
 //        }
 
-        /*TODO: При перевороте activity кнопки стоновятся доступными,
-           в результате чего возможно нажимать их заново
-           Необходимо устранить БАГ
-         */
-
-
         nextButton.setOnClickListener {
             if (quizViewModel.currentIndex < quizViewModel.getSize()-1){
             quizViewModel.moveToNext()
@@ -103,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
             }
         }
-
 
         cheatButton.setOnClickListener {
             val answerIsTrue = quizViewModel.currentQuestionAnswer
@@ -124,10 +102,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
+//    private fun updateQuestion() {
+//        val questionTextResId = questionBank[currentIndex].textResId
+//        questionTextView.setText(questionTextResId)
+//    }
+
     private fun updateQuestion() {
         val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
-
     }
 
     private fun answerPercent(count: Int): Int {
@@ -150,12 +134,10 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.countTrueAnswers += 1
             quizViewModel.percentAnswer = answerPercent( quizViewModel.countTrueAnswers)
             answerPercentTextView.text ="${quizViewModel.percentAnswer}%"
-
             trueButton.isEnabled = false
             falseButton.isEnabled = false
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
-
 }
 

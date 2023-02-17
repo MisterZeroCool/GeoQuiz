@@ -7,12 +7,11 @@ import androidx.lifecycle.ViewModel
 
 class QuizViewModel : ViewModel() {
 
-    var currentIndex = 0
+    var currentIndex = 0;
     var countTrueAnswers = 0
     var percentAnswer = 0
-    
-    var isCheater = false
 
+    var isCheater = false
 
     private val questionBank = listOf(
         Question(R.string.question_moscow,true),
