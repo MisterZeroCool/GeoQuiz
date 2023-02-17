@@ -13,6 +13,9 @@ class QuizViewModel : ViewModel() {
 
     var isCheater = false
 
+    var buttonF:Boolean = true
+    var buttonT:Boolean = true
+
     private val questionBank = listOf(
         Question(R.string.question_moscow,true),
         Question(R.string.question_eswatini,true),
