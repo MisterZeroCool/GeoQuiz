@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
+
 
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
@@ -43,28 +45,35 @@ class MainActivity : AppCompatActivity() {
         cheatButton = findViewById(R.id.cheat_button)
 
         answerPercentTextView.text = quizViewModel.percentAnswer.toString()+"%"
+        falseButton.isEnabled = quizViewModel.buttonF
+        trueButton.isEnabled = quizViewModel.buttonT
+
 
 
         trueButton.setOnClickListener {
             checkAnswer(true)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
+            quizViewModel.buttonF = false
+            quizViewModel.buttonT = false
         }
 
         falseButton.setOnClickListener {
             checkAnswer(false)
             falseButton.isEnabled = false
             trueButton.isEnabled = false
+            quizViewModel.buttonF = false
+            quizViewModel.buttonT = false
         }
 
         resetButton.setOnClickListener {
             quizViewModel.currentIndex = 0
             quizViewModel.countTrueAnswers = 0
             updateQuestion()
-            falseButton.isEnabled = true
-            trueButton.isEnabled = true
             quizViewModel.percentAnswer = 0
             answerPercentTextView.text = quizViewModel.percentAnswer.toString() +"%"
+            quizViewModel.buttonF = true
+            quizViewModel.buttonT = true
         }
 
 //        prevButton.setOnClickListener {
@@ -134,8 +143,6 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.countTrueAnswers += 1
             quizViewModel.percentAnswer = answerPercent( quizViewModel.countTrueAnswers)
             answerPercentTextView.text ="${quizViewModel.percentAnswer}%"
-            trueButton.isEnabled = false
-            falseButton.isEnabled = false
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
