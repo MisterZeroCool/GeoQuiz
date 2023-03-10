@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 
-const val EXTRA_ANSWER_SHOWN = "ru.foxdex.geoquiz.answer_shown"
-private const val EXTRA_ANSWER_IS_TRUE = "ru.foxdex.geoquiz.answer_is_true"
+const val EXTRA_ANSWER_SHOWN = "ru.foxdev.geoquiz.answer_shown"
+private const val EXTRA_ANSWER_IS_TRUE = "ru.foxdev.geoquiz.answer_is_true"
 
 class CheatActivity : AppCompatActivity() {
     private lateinit var answerTextView: TextView

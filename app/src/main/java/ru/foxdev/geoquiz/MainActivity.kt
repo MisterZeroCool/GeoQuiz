@@ -1,8 +1,11 @@
 package ru.foxdev.geoquiz
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[QuizViewModel::class.java]
     }
 
+@SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -93,10 +97,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        cheatButton.setOnClickListener {
+
+        cheatButton.setOnClickListener {view->
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
-            startActivityForResult(intent, REQUEST_CODE_CHEAT)
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val options =
+                    ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.width, view.height)
+                startActivityForResult(intent, REQUEST_CODE_CHEAT, options.toBundle())
+            }else{
+                startActivityForResult(intent, REQUEST_CODE_CHEAT)
+            }
         }
         updateQuestion()
     }
